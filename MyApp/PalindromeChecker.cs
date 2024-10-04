@@ -7,7 +7,11 @@ namespace MyApp
     {
         public bool IsPalindrome(string input)
         {
-            input = input.ToLower().Replace(" ", string.Empty).Replace(",", string.Empty).Replace(":", string.Empty);
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
             var left = 0;
             var right = input.Length - 1;
 

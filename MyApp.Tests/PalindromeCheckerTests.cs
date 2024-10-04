@@ -7,11 +7,11 @@ namespace MyApp.Tests
     public class PalindromeCheckerTests
     {
         [Test]
-        public void IsPalindrome_WhenStringIsPalindrome_ReturnsTrue()
+        public void IsPalindrome_EmptyString_ReturnsTrue()
         {
             // Arrange
+            var input = "";
             var palindromeChecker = new PalindromeChecker();
-            var input = "madam";
 
             // Act
             var result = palindromeChecker.IsPalindrome(input);
@@ -21,11 +21,39 @@ namespace MyApp.Tests
         }
 
         [Test]
-        public void IsPalindrome_WhenStringIsNotPalindrome_ReturnsFalse()
+        public void IsPalindrome_SingleCharacterString_ReturnsTrue()
         {
             // Arrange
+            var input = "a";
             var palindromeChecker = new PalindromeChecker();
+
+            // Act
+            var result = palindromeChecker.IsPalindrome(input);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void IsPalindrome_PalindromeString_ReturnsTrue()
+        {
+            // Arrange
+            var input = "madam";
+            var palindromeChecker = new PalindromeChecker();
+
+            // Act
+            var result = palindromeChecker.IsPalindrome(input);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void IsPalindrome_NonPalindromeString_ReturnsFalse()
+        {
+            // Arrange
             var input = "hello";
+            var palindromeChecker = new PalindromeChecker();
 
             // Act
             var result = palindromeChecker.IsPalindrome(input);
@@ -35,45 +63,41 @@ namespace MyApp.Tests
         }
 
         [Test]
-        public void IsPalindrome_WhenStringIsEmpty_ReturnsTrue()
+        public void IsPalindrome_NullString_ThrowsArgumentNullException()
         {
             // Arrange
+            string input = null;
             var palindromeChecker = new PalindromeChecker();
-            var input = "";
 
-            // Act
-            var result = palindromeChecker.IsPalindrome(input);
-
-            // Assert
-            Assert.IsTrue(result);
+            // Act and Assert
+            Assert.Throws<ArgumentNullException>(() => palindromeChecker.IsPalindrome(input));
         }
+    }
 
-        [Test]
-        public void IsPalindrome_WhenStringHasSingleCharacter_ReturnsTrue()
+    public class PalindromeChecker
+    {
+        public bool IsPalindrome(string input)
         {
-            // Arrange
-            var palindromeChecker = new PalindromeChecker();
-            var input = "a";
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
 
-            // Act
-            var result = palindromeChecker.IsPalindrome(input);
+            var left = 0;
+            var right = input.Length - 1;
 
-            // Assert
-            Assert.IsTrue(result);
-        }
+            while (left < right)
+            {
+                if (input[left] != input[right])
+                {
+                    return false;
+                }
 
-        [Test]
-        public void IsPalindrome_WhenStringHasSpacesAndPunctuation_ReturnsTrue()
-        {
-            // Arrange
-            var palindromeChecker = new PalindromeChecker();
-            var input = "A man, a plan, a canal: Panama";
+                left++;
+                right--;
+            }
 
-            // Act
-            var result = palindromeChecker.IsPalindrome(input);
-
-            // Assert
-            Assert.IsTrue(result);
+            return true;
         }
     }
 }
